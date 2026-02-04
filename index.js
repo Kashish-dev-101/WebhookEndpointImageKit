@@ -1,33 +1,42 @@
 const express = require("express");
 
 const app = express();
-const PORT = 8000;
+const PORT = 8001;
 
-// middle ware to parse JSON data (Content-Type: application/json)
+// Middleware to parse JSON data (Content-Type: application/json)
 app.use(express.json({ limit: "2mb" }));
 
-// Simple Health check endpoint
+// Health check endpoint
 app.get("/", (req, res) => {
   res.send("Hello from Webhook Endpoint");
 });
 
-// The Webhook endpoint
-app.post("/webhook/ImageKit", (req, res) => {
+// Shared webhook handler
+function handleWebhook(req, res) {
   const receivedData = req.body;
-  console.log("Received data:", receivedData);
-  const receivedAT = new Date().toISOString();
-  console.log("received at:", receivedAT);
-  console.log("request headers:", JSON.stringify(req.headers, null, 2));
+  const receivedAt = new Date().toISOString();
+
+  console.log("--- Webhook Received ---");
+  console.log("Endpoint:", req.originalUrl);
+  console.log("Received at:", receivedAt);
+  console.log("Headers:", JSON.stringify(req.headers, null, 2));
+  console.log("Data:", JSON.stringify(receivedData, null, 2));
+  console.log("------------------------");
 
   res.status(200).json({
     status: "success",
     message: "Webhook received successfully",
-    receivedAt: receivedAT,
+    receivedAt: receivedAt,
+    endpoint: req.originalUrl,
     data: receivedData,
   });
-});
+}
 
-// listen on the specified port
+// Webhook endpoints
+app.post("/webhook/Videos/ImageKit", handleWebhook);
+app.post("/webhook/Pre-Post/ImageKit", handleWebhook);
+
+// Start server
 app.listen(PORT, () => {
-  console.log(`server started at port ${PORT}`);
+  console.log(`Webhook server started at http://localhost:${PORT}`);
 });
