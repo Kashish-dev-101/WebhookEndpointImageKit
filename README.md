@@ -1,6 +1,6 @@
 # ImageKit Webhook Endpoint
 
-A simple Node.js server to receive and log [ImageKit webhooks](https://imagekit.io/docs/webhooks) for video processing and pre/post transformations.
+A simple Node.js server to receive and log [ImageKit webhooks](https://imagekit.io/docs/webhooks) for video processing and when applying [pre/post transformations](https://imagekit.io/docs/transformations/pre-post-transformations) when uploading assets to ImageKit [DAM](https://imagekit.io/docs/dam/overview).
 
 ## What are Webhooks?
 
@@ -122,5 +122,3 @@ WebhookEndpointImageKit/
 ISC
 
 ---
-
-Developed by **Ashish**
